@@ -9,6 +9,7 @@ const ffmpeg = new FFmpeg();
 export default function App() {
   const [ready, setReady] = useState<boolean>(null);
   const [log, setLog] = useState("");
+  const [video, setVideo] = useState<File>(null);
 
   useEffect(() => {
     ffmpeg.on("log", ({ message }) => {
@@ -37,6 +38,16 @@ export default function App() {
       }
       <p>{log}</p>
       <button onClick={load}>Load FFMpeg</button>
+      <input type="file" onChange={e => setVideo(e.target.files.item(0))} />
+      {
+        video && (
+          <video
+            controls
+            width="720"
+            src={URL.createObjectURL(video)}
+          ></video>
+        )
+      }
     </div>
   )
 }
