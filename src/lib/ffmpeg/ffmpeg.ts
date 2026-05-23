@@ -1,21 +1,12 @@
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { toBlobURL } from "@ffmpeg/util";
+import type { LogConfig } from "./types";
 
 /**
  * The base URL recommended for loading **FFmpeg.wasm**,
  * as per its {@link https://ffmpegwasm.netlify.app/docs/getting-started/usage docs}.
  * */
 const baseUrl = "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/esm";
-
-interface LogConfig {
-
-  /** Tells whether logs should be stored. */
-  store: boolean;
-  
-  /** Tells whether logs should be printed. */
-  print: boolean;
-
-}
 
 /** Determines if realtime logs are store and/ or printed. */
 const logConfig: LogConfig = {
@@ -39,13 +30,6 @@ export async function load() {
     coreURL: await toBlobURL(`${baseUrl}/ffmpeg-core.js`, "text/javascript"),
     wasmURL: await toBlobURL(`${baseUrl}/ffmpeg-core.wasm`, "application/wasm"),
   });
-}
-
-/**
- * Transforms a `string` with arguments into an `ffmpeg` friendly arg array.
- */
-export function argify(args: string) {
-  return args.split(" ");
 }
 
 /**
