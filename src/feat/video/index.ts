@@ -1,1 +1,2 @@
-export { detectIdleness } from "./idle-detector";
+export { detectIdleness } from "./idleness-detector";
+export { convertFormat } from "./format-converter";

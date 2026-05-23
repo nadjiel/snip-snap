@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
-import { fetchFile } from "@ffmpeg/util";
-import { ffmpeg, load } from "@/lib/ffmpeg";
+import { ffmpeg, load, configLogging } from "@/lib/ffmpeg";
+import { detectIdleness, convertFormat } from "@/feat/video";
+
+configLogging(true);
 
 export default function ConversorPage() {
   const [ready, setReady] = useState(false);
@@ -11,21 +13,10 @@ export default function ConversorPage() {
   useEffect(() => {
     ffmpeg.on("log", ({ message }) => {
       setLog(message);
-      console.log(message);
     });
 
     load().then(() => setReady(true));
   }, []);
-
-  const convert = async () => {
-    ffmpeg.writeFile("input.mkv", await fetchFile(video));
-
-    await ffmpeg.exec(["-i", "input.mkv", "-t", "2.5", "-ss", "2.0", "-f", "gif", "output.gif"]);
-
-    const data = await ffmpeg.readFile("output.gif");
-
-    setGifURL(URL.createObjectURL(new Blob([data.buffer], { type: "image/gif"})));
-  }
 
   return (
     <div>
@@ -35,7 +26,8 @@ export default function ConversorPage() {
           : <p>Loading...</p>
       }
       <p>{log}</p>
-      <button onClick={convert}>Convert video!</button>
+      <button onClick={() => convertFormat(video).then(setGifURL)}>Convert video!</button>
+      <button onClick={() => detectIdleness(video).then(console.log)}>Detect idleness!</button>
       <input type="file" onChange={e => setVideo(e.target.files.item(0))} />
       {
         video && (
