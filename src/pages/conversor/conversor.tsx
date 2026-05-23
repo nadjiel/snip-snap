@@ -1,10 +1,6 @@
 import { useState, useEffect } from "react";
-import { FFmpeg } from "@ffmpeg/ffmpeg";
-import { toBlobURL, fetchFile } from "@ffmpeg/util";
-
-const baseUrl = "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/esm";
-
-const ffmpeg = new FFmpeg();
+import { fetchFile } from "@ffmpeg/util";
+import { ffmpeg, load } from "@/lib/ffmpeg";
 
 export default function ConversorPage() {
   const [ready, setReady] = useState(false);
@@ -12,22 +8,13 @@ export default function ConversorPage() {
   const [video, setVideo] = useState<File>(null);
   const [gifURL, setGifURL] = useState("");
 
-  const load = async () => {
-    await ffmpeg.load({
-      coreURL: await toBlobURL(`${baseUrl}/ffmpeg-core.js`, "text/javascript"),
-      wasmURL: await toBlobURL(`${baseUrl}/ffmpeg-core.wasm`, "application/wasm"),
-    });
-
-    setReady(true);
-  }
-
   useEffect(() => {
     ffmpeg.on("log", ({ message }) => {
       setLog(message);
       console.log(message);
     });
 
-    load();
+    load().then(() => setReady(true));
   }, []);
 
   const convert = async () => {
