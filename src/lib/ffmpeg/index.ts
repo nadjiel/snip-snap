@@ -1,2 +1,2 @@
-export { logs, ffmpeg, load, configLogging } from "./ffmpeg";
-export { parseFreezeDetect, argify } from "./util";
+export { configLogging, ffmpeg, load, logs } from "./ffmpeg";
+export { argify, parseFreezeDetect } from "./util";
