@@ -9,7 +9,7 @@ configLogging(true);
 export default function ConverterPage() {
 	const [ready, setReady] = useState(false);
 	const [log, setLog] = useState("");
-	const [video, setVideo] = useState<File>(null);
+	const [video, setVideo] = useState<File | null>(null);
 	const [gifURL, setGifURL] = useState("");
 
 	useEffect(() => {
@@ -25,17 +25,30 @@ export default function ConverterPage() {
 			<h1>Video Converter</h1>
 			{ready ? <p>FFMpeg loaded!</p> : <p>Loading...</p>}
 			<div>
-				<Input type="file" onChange={(e) => setVideo(e.target.files.item(0))} />
-				<video controls width={720} src={video && URL.createObjectURL(video)}>
+				<Input
+					type="file"
+					onChange={(e) => setVideo(e.target.files?.item(0) ?? null)}
+				/>
+				<video
+					controls
+					width={720}
+					src={video ? URL.createObjectURL(video) : undefined}
+				>
 					<track kind="captions"></track>
 				</video>
 			</div>
 			<p>{log}</p>
 			<div>
-				<Button onClick={() => convertFormat(video).then(setGifURL)}>
+				<Button
+					disabled={!!video}
+					onClick={() => video && convertFormat(video).then(setGifURL)}
+				>
 					Convert video!
 				</Button>
-				<Button onClick={() => detectIdleness(video).then(console.log)}>
+				<Button
+					disabled={!!video}
+					onClick={() => video && detectIdleness(video).then(console.log)}
+				>
 					Detect idleness!
 				</Button>
 			</div>

@@ -6,7 +6,7 @@ export async function convertFormat(video: File) {
 
 	await ffmpeg.exec(argify(`-i ${video.name} -f gif output.gif`));
 
-	const data = (await ffmpeg.readFile("output.gif")) as Uint8Array;
+	const data = (await ffmpeg.readFile("output.gif")) as Uint8Array<ArrayBuffer>;
 
-	return URL.createObjectURL(new Blob([data.buffer], { type: "image/gif" }));
+	return URL.createObjectURL(new Blob([data], { type: "image/gif" }));
 }

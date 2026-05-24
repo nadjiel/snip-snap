@@ -7,7 +7,7 @@ const root = document.getElementById("root");
 
 if (!root) throw new Error("#root div not found!");
 
-createRoot(document.getElementById("root")).render(
+createRoot(root).render(
 	<StrictMode>
 		<App />
 	</StrictMode>,
