@@ -14,7 +14,7 @@
 	"rtl": true,
 	"aliases": {
 		"components": "@/comps",
-		"utils": "@/lib/util",
+		"utils": "@/util/css",
 		"ui": "@/comps/ui",
 		"lib": "@/lib",
 		"hooks": "@/hooks"
