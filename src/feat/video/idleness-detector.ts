@@ -1,9 +1,11 @@
 import { fetchFile } from "@ffmpeg/util";
-import { ffmpeg, argify } from "@/lib/ffmpeg";
+import { ffmpeg, argify, parseFreezeDetect } from "@/lib/ffmpeg";
+import type { Duration } from "@/lib/ffmpeg/types";
 
 /**
  * Detects parts of a video that are considered "idle",
- * according to the `sensitivity` and `duration` parameters.
+ * according to the `sensitivity` and `duration` parameters
+ * and returns them in a {@link Duration `Duration`} array.
  * 
  * @param video The video to analyze.
  * @param sensitivity The sensitivity value for the detection.
@@ -18,6 +20,7 @@ export async function detectIdleness(video: File, sensitivity = 0.0001, duration
   );
 
   const data = await ffmpeg.readFile("idleness.tmp") as Uint8Array;
+  const metadata = new TextDecoder().decode(data);
 
-  return new TextDecoder().decode(data);
+  return parseFreezeDetect(metadata);
 }
