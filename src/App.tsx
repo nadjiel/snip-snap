@@ -1,7 +1,7 @@
-import { Conversor } from "@/pages";
+import { ConverterPage } from "@/pages";
 
 export default function App() {
   return (
-    <Conversor />
+    <ConverterPage />
   );
 }
