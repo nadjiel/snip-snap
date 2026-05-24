@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { Button } from "@/comps/ui/button";
+import { Input } from "@/comps/ui/input";
 import { ffmpeg, load, configLogging } from "@/lib/ffmpeg";
 import { detectIdleness, convertFormat } from "@/feat/video";
 
@@ -27,7 +29,7 @@ export default function ConverterPage() {
           : <p>Loading...</p>
       }
       <div>
-        <input type="file" onChange={e => setVideo(e.target.files.item(0))} />
+        <Input type="file" onChange={e => setVideo(e.target.files.item(0))} />
         <video
           controls
           width={720}
@@ -36,8 +38,8 @@ export default function ConverterPage() {
       </div>
       <p>{log}</p>
       <div>
-        <button onClick={() => convertFormat(video).then(setGifURL)}>Convert video!</button>
-        <button onClick={() => detectIdleness(video).then(console.log)}>Detect idleness!</button>
+        <Button onClick={() => convertFormat(video).then(setGifURL)}>Convert video!</Button>
+        <Button onClick={() => detectIdleness(video).then(console.log)}>Detect idleness!</Button>
       </div>
       <div>
         <h2>Result</h2>
